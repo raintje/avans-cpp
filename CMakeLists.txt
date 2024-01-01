@@ -3,5 +3,12 @@ PROJECT(SwordAndHorse)
 
 SET(CMAKE_CXX_STANDARD 20)
 
+ADD_SUBDIRECTORY(domain)
+ADD_SUBDIRECTORY(data-access)
+
 ADD_EXECUTABLE(${PROJECT_NAME}
         src/main.cc)
+
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC
+        Domain
+        DataAccess)

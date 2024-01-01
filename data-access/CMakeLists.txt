@@ -1,0 +1,11 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.22)
+PROJECT(DataAccess)
+
+SET(CMAKE_CXX_STANDARD 20)
+
+ADD_LIBRARY(${PROJECT_NAME} SHARED
+        include/data_reader.h
+        src/data_reader.cc)
+
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC
+        include)

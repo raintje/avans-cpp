@@ -1,0 +1,9 @@
+
+#ifndef DOMAIN_INCLUDE_VILLAGE_H
+#define DOMAIN_INCLUDE_VILLAGE_H
+
+class Village {
+
+};
+
+#endif //DOMAIN_INCLUDE_VILLAGE_H
