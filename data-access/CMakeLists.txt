@@ -4,10 +4,9 @@ PROJECT(data-access)
 SET(CMAKE_CXX_STANDARD 20)
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
-        include/db_handler.h
-        src/db_handler.cc
-        src/faction_handler.cc
-        include/faction_handler.h)
+        src/db_wrapper.cc
+        include/db_wrapper.h
+)
 
 FIND_PACKAGE(SQLite3 REQUIRED)
 

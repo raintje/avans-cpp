@@ -5,7 +5,8 @@ SET(CMAKE_CXX_STANDARD 20)
 
 ADD_LIBRARY(${PROJECT_NAME} STATIC
         src/random.cc
-        include/random.h)
+        include/random.h
+)
 
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC
         include)
