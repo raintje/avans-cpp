@@ -5,7 +5,6 @@ SET(CMAKE_CXX_STANDARD 20)
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
         src/db_wrapper.cc
-        include/db_wrapper.h
 )
 
 FIND_PACKAGE(SQLite3 REQUIRED)

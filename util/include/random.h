@@ -16,7 +16,7 @@ class Random {
   static Random &GetInstance();
 
   int RandomIntInRange(int a, int b);
-  double RandomDoubleInRange(double a, double b);
+  bool PercentChance(double percent);
   template<typename T>
   T RandomItemFromVector(const std::vector<T> &vec);
 

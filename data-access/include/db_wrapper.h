@@ -28,7 +28,6 @@ class DbWrapper {
 
   DbWrapper();
 };
-
 } // namespace data_access
 
-#endif //DATA_ACCESS_SRC_DB_WRAPPER_H
+#endif // DATA_ACCESS_SRC_DB_WRAPPER_H

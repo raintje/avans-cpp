@@ -11,9 +11,9 @@ int Random::RandomIntInRange(int a, int b) {
   return dist(engine_);
 }
 
-double Random::RandomDoubleInRange(double a, double b) {
-  std::uniform_real_distribution<double> dist{a, b};
-  return dist(engine_);
+bool Random::PercentChance(double percent = 0.5) {
+  std::uniform_real_distribution<double> dist{0, 1};
+  return dist(engine_) < percent;
 }
 
 template<typename T>

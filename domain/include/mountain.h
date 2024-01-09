@@ -1,9 +1,0 @@
-
-#ifndef DOMAIN_INCLUDE_MOUNTAIN_H
-#define DOMAIN_INCLUDE_MOUNTAIN_H
-
-class Mountain {
-
-};
-
-#endif //DOMAIN_INCLUDE_MOUNTAIN_H
