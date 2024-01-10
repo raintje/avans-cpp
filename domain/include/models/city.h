@@ -7,9 +7,6 @@ namespace domain::models {
 class City : public interface::Tile {
  public:
   void StepOn(models::Player player) override;
-  [[nodiscard]]structs::Location GetLocation() const;
- private:
-  structs::Location location_;
 };
 } // namespace domain::models
 
