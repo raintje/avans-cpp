@@ -6,9 +6,10 @@ SET(CMAKE_CXX_STANDARD 20)
 ADD_LIBRARY(${PROJECT_NAME} SHARED
         src/province.cc
         src/world.cc
-        src/tile.cc
         src/player.cc
-        include/interface/tile_contents.h
+        src/mountain.cc
+        src/village.cc
+        src/city.cc
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

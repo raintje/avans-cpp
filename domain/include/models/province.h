@@ -9,7 +9,7 @@
 #include "random.h"
 #include "structs/location.h"
 #include "structs/province_statistics.h"
-#include "tile.h"
+#include "interface/tile.h"
 
 namespace domain::models {
 

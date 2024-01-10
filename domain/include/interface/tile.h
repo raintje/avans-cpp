@@ -3,13 +3,13 @@
 
 #include <memory>
 
-#include "player.h"
+#include "../models/player.h"
+#include "../structs/location.h"
 
-namespace domain::models {
+namespace domain::interface {
 class Tile {
  public:
-  void StepOn(Player player);
- private:
+  virtual void StepOn(models::Player player) = 0;
 };
 } // namespace domain::models
 
