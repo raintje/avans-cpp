@@ -10,9 +10,7 @@ namespace domain::interface {
 class Tile {
  public:
   virtual void StepOn(models::Player player) = 0;
-  [[nodiscard]]structs::Location GetLocation() const { return location_; }
- protected:
-  structs::Location location_;
+  virtual structs::Location GetLocation() const = 0;
 };
 } // namespace domain::models
 

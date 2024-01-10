@@ -7,6 +7,12 @@ namespace domain::models {
 class Mountain : public interface::Tile {
  public:
   void StepOn(models::Player player) override;
+  structs::Location GetLocation() const override;
+
+  Mountain(structs::Location location);
+  ~Mountain();
+ private:
+  structs::Location location_;
 };
 } // namespace domain::models
 
