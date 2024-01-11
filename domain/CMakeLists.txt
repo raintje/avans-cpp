@@ -7,9 +7,8 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
         src/province.cc
         src/world.cc
         src/player.cc
-        src/mountain.cc
-        src/village.cc
-        src/city.cc
+        include/enum/tile_type.h
+        src/tile.cc
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

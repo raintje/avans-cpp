@@ -9,7 +9,7 @@
 #include "random.h"
 #include "structs/location.h"
 #include "structs/province_statistics.h"
-#include "interface/tile.h"
+#include "tile.h"
 
 namespace domain::models {
 
@@ -19,7 +19,7 @@ class Province {
   ~Province();
  private:
   structs::Location location_;
-  std::vector<Tile> tiles_;
+  std::vector<std::unique_ptr<Tile>> tiles_;
 };
 
 } // namespace domain::models

@@ -6,9 +6,11 @@
 #define MAX_VILLAGES 6
 #define MAX_MOUNTAINS 4
 
-#include <vector>
+#include <map>
 #include <memory>
 
+#include "structs/location.h"
+#include "structs/province_statistics.h"
 #include "province.h"
 
 namespace domain::models {
@@ -19,7 +21,7 @@ class World {
  private:
   std::shared_ptr<Province> current_province_;
   std::shared_ptr<Province> previous_province_;
-  std::vector<std::shared_ptr<Province>> provinces_;
+  std::map<structs::Location, structs::ProvinceStatistics> provinces_;
 
 };
 } // namespace domain::models

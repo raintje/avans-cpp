@@ -5,6 +5,30 @@ namespace domain::structs {
 struct Location {
   int x;
   int y;
+
+  bool operator==(const Location &l) const {
+    return x == l.x && y == l.y;
+  }
+
+  bool operator!=(const Location &l) const {
+    return x != l.x || y != l.y;
+  }
+
+  bool operator<(const Location &l) const {
+    return x < l.x || y < l.y;
+  }
+
+  bool operator>(const Location &l) const {
+    return x > l.x || (x == l.x && y > l.y);
+  }
+
+  Location operator/(int m) const {
+    return {x / m, y / m};
+  }
+  Location operator*(int m) const {
+    return {x * m, y * m};
+  }
+
 };
 } // namespace domain::structs
 

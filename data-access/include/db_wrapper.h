@@ -2,7 +2,8 @@
 #define DATA_ACCESS_SRC_DB_WRAPPER_H
 
 #include <iostream>
-#include <memory>
+#include <string>
+#include <vector>
 
 #include "sqlite3.h"
 
@@ -18,8 +19,16 @@ class DbWrapper {
   // Returns the singleton instance of the DbWrapper.
   static DbWrapper *GetInstance();
 
-  // Returns the pointer to the db instance.
-  sqlite3 *GetDb();
+  /// @brief Fetches all factions from the database.
+  /// @return A vector containing all the factions as std::strings.
+  [[nodiscard]]std::vector<std::string> GetFactions() const;
+
+  /// @brief Fetches the threat level stored under the given int.
+  ///
+  /// @param lvl The threat level to fetch.
+  /// @return A pair containing the min and max units associated with the threat level.
+  [[nodiscard]]std::pair<int, int> GetThreatLevel(int lvl) const;
+
 
   // Destructor to clean up DB connection.
   ~DbWrapper();

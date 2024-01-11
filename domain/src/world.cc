@@ -9,7 +9,7 @@ World::World() : current_province_(nullptr),
       structs::ProvinceStatistics stats = {util::Random::GetInstance().RandomIntInRange(0, MAX_CITIES),
                                            util::Random::GetInstance().RandomIntInRange(0, MAX_VILLAGES),
                                            util::Random::GetInstance().RandomIntInRange(0, MAX_MOUNTAINS)};
-      provinces_.push_back(std::make_shared<Province>(loc, stats));
+      provinces_.emplace(loc, stats);
     }
   }
 }
