@@ -19,6 +19,7 @@ char Tile::GetDrawChar() const {
     case enums::WARBAND:return '*';
     case enums::PLAYER:return 'K';
   }
+  return -1;
 }
 
 } // namespace domain::models

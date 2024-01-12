@@ -6,14 +6,9 @@ Random &Random::GetInstance() {
   return instance;
 }
 
-int Random::RandomIntInRange(int a, int b) {
-  std::uniform_int_distribution<int> dist{a, b};
+int Random::RandomIntInRange(const int min, const int max) {
+  std::uniform_int_distribution<int> dist{min, max};
   return dist(engine_);
-}
-
-bool Random::PercentChance(double percent = 0.5) {
-  std::uniform_real_distribution<double> dist{0, 1};
-  return dist(engine_) < percent;
 }
 
 template<typename T>

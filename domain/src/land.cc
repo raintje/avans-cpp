@@ -1,17 +1,17 @@
-#include "models/world.h"
+#include "models/land.h"
 
 namespace domain::models {
-World::World() : current_province_(nullptr),
-                 previous_province_(nullptr) {
-  for (int x = 0; x < WORLD_SIZE; ++x) {
-    for (int y = 0; y < WORLD_SIZE; ++y) {
+Land::Land() : current_province_(nullptr),
+               previous_province_(nullptr) {
+  for (int x = 0; x < LAND_SIZE; ++x) {
+    for (int y = 0; y < LAND_SIZE; ++y) {
       structs::Location loc = {x, y};
       structs::ProvinceStatistics stats = {util::Random::GetInstance().RandomIntInRange(0, MAX_CITIES),
                                            util::Random::GetInstance().RandomIntInRange(0, MAX_VILLAGES),
                                            util::Random::GetInstance().RandomIntInRange(0, MAX_MOUNTAINS)};
-      provinces_.emplace(loc, stats);
+      province_statistics_.emplace(loc, stats);
     }
   }
 }
-World::~World() = default;
+Land::~Land() = default;
 } // namespace domain::models

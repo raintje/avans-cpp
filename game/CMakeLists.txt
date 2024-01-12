@@ -1,7 +1,10 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.22)
-PROJECT(swordandhorse)
+PROJECT(game)
 
 SET(CMAKE_CXX_STANDARD 20)
 
 ADD_EXECUTABLE(${PROJECT_NAME}
         src/main.cc)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        db)
