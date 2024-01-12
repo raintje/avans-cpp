@@ -43,11 +43,17 @@ class DbWrapper {
   /// @returns A vector containing all the troop types as std::strings.
   [[nodiscard]]std::vector<std::string> GetTroopTypes() const;
 
+  /// @brief Fetches troop information by faction.
+  ///
+  /// @param faction The faction of the troop in the database.
+  /// @returns A tuple containing all the information about the troop.
+  [[nodiscard]]int GetTroopIdByFaction(const std::string &faction) const;
+
   /// @brief Fetches troop information by id.
   ///
-  /// @param id The id of the troop entity in the database
+  /// @param id The id of the troop in the database.
   /// @returns A tuple containing all the information about the troop.
-  [[nodiscard]]std::tuple<int, std::string, std::string, std::string, int> GetTroopData(int id) const;
+  [[nodiscard]]std::tuple<int, std::string, std::string, std::string, int> GetTroopDataById(int id) const;
 
   // Destructor to clean up DB connection.
   ~DbWrapper();

@@ -18,8 +18,12 @@ class Land {
  public:
   Land();
   ~Land();
+
+  void EnterProvince(structs::Location location);
  private:
   std::map<structs::Location, structs::ProvinceStatistics> province_statistics_;
+  std::unique_ptr<Province> current_province_;
+  std::map<structs::Location, std::unique_ptr<Province>> previous_provinces_;
 };
 } // namespace domain::models
 

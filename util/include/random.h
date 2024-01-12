@@ -15,7 +15,7 @@ class Random {
   Random &operator=(Random &&) = delete;
 
   /// @brief Returns the singleton instance of the RandomEngine wrapper.
-  static Random &GetInstance();
+  static Random *GetInstance();
 
   /// @brief Generates a random integer between the two given integers.
   ///

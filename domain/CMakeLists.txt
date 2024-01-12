@@ -7,11 +7,13 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
         src/province.cc
         src/land.cc
         src/player.cc
-        src/tile.cc
+        src/enemy.cc
+        src/king.cc
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         include)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        util)
+        util
+        db)

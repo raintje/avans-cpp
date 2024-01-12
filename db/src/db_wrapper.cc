@@ -91,8 +91,28 @@ std::vector<std::string> DbWrapper::GetTroopTypes() const {
   return results;
 }
 
-std::tuple<int, std::string, std::string, std::string, int> DbWrapper::GetTroopData(const int id) const {
-  std::string q = "SELECT factie, soort, naam, prijs FROM 'manschappen' WHERE id = ?";
+int DbWrapper::GetTroopIdByFaction(const std::string &faction) const {
+  std::string q = "SELECT ID FROM 'manschappen' WHERE factie = ?;";
+  sqlite3_stmt *s = nullptr;
+
+  if (sqlite3_prepare_v2(db_, q.c_str(), -1, &s, nullptr) != SQLITE_OK) {
+    std::cerr << sqlite3_errmsg(db_) << std::endl;
+  }
+
+  if (sqlite3_bind_text(s, 1, faction.c_str(), static_cast<int>(faction.length()), nullptr) != SQLITE_OK) {
+    std::cerr << sqlite3_errmsg(db_) << std::endl;
+  }
+
+  int id;
+  while (sqlite3_step(s) == SQLITE_ROW) {
+    id = sqlite3_column_int(s, 0);
+  }
+
+  return id;
+}
+
+std::tuple<int, std::string, std::string, std::string, int> DbWrapper::GetTroopDataById(const int id) const {
+  std::string q = "SELECT factie, soort, naam, prijs FROM 'manschappen' WHERE ID = ?";
   sqlite3_stmt *s = nullptr;
 
   if (sqlite3_prepare_v2(db_, q.c_str(), -1, &s, nullptr) != SQLITE_OK) {

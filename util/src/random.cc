@@ -1,9 +1,9 @@
 #include "../include/random.h"
 
 namespace util {
-Random &Random::GetInstance() {
+Random *Random::GetInstance() {
   static Random instance;
-  return instance;
+  return &instance;
 }
 
 int Random::RandomIntInRange(const int min, const int max) {

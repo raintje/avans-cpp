@@ -17,6 +17,10 @@ class Province {
  public:
   Province(structs::Location location, structs::ProvinceStatistics province_statistics);
   ~Province();
+
+  /// @brief Getter for the location of the province.
+  [[nodiscard]]structs::Location GetLocation() const;
+
  private:
   structs::Location location_;
   std::vector<std::unique_ptr<Tile>> tiles_;
