@@ -1,18 +1,18 @@
-#include "../include/random.h"
+#include "../include/random_wrapper.h"
 
 namespace util {
-Random *Random::GetInstance() {
-  static Random instance;
+RandomWrapper *RandomWrapper::GetInstance() {
+  static RandomWrapper instance;
   return &instance;
 }
 
-int Random::RandomIntInRange(const int min, const int max) {
+int RandomWrapper::RandomIntInRange(const int min, const int max) {
   std::uniform_int_distribution<int> dist{min, max};
   return dist(engine_);
 }
 
 template<typename T>
-T Random::RandomItemFromVector(const std::vector<T> &vec) {
+T RandomWrapper::RandomItemFromVector(const std::vector<T> &vec) {
   if (vec.empty())
     throw std::invalid_argument("[RandomItemFromVector]: Empty vector passed.");
 
@@ -20,5 +20,5 @@ T Random::RandomItemFromVector(const std::vector<T> &vec) {
   return vec[dist(engine_)];
 }
 
-Random::~Random() = default;
+RandomWrapper::~RandomWrapper() = default;
 } // namespace util

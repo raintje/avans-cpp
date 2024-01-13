@@ -15,7 +15,7 @@ struct Location {
   }
 
   bool operator<(const Location &l) const {
-    return x < l.x || y < l.y;
+    return x < l.x || (x == l.x && y < l.y);
   }
 
   bool operator>(const Location &l) const {
@@ -25,6 +25,7 @@ struct Location {
   Location operator/(int m) const {
     return {x / m, y / m};
   }
+
   Location operator*(int m) const {
     return {x * m, y * m};
   }

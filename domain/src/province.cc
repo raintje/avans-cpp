@@ -1,4 +1,5 @@
 #include "models/province.h"
+#include "models/enemy.h"
 
 namespace domain::models {
 Province::Province(structs::Location location,

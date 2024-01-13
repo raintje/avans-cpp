@@ -3,13 +3,13 @@
 namespace domain::models {
 
 Land::Land() : current_province_(nullptr) {
-  for (int x = 0; x < LAND_SIZE; ++x) {
-    for (int y = 0; y < LAND_SIZE; ++y) {
+  for (int y = 0; y < LAND_SIZE; ++y) {
+    for (int x = 0; x < LAND_SIZE; ++x) {
       structs::Location loc = {x, y};
       structs::ProvinceStatistics stats = {
-          util::Random::GetInstance()->RandomIntInRange(0, MAX_CITIES),
-          util::Random::GetInstance()->RandomIntInRange(0, MAX_VILLAGES),
-          util::Random::GetInstance()->RandomIntInRange(0, MAX_MOUNTAINS)
+          util::RandomWrapper::GetInstance()->RandomIntInRange(0, MAX_CITIES),
+          util::RandomWrapper::GetInstance()->RandomIntInRange(0, MAX_VILLAGES),
+          util::RandomWrapper::GetInstance()->RandomIntInRange(0, MAX_MOUNTAINS)
       };
       province_statistics_.emplace(loc, stats);
     }

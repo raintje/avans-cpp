@@ -1,12 +1,11 @@
 #ifndef DOMAIN_INCLUDE_PROVINCE_H
 #define DOMAIN_INCLUDE_PROVINCE_H
 
-#define PROVINCE_SIZE 12
+constexpr int PROVINCE_SIZE = 12;
 
 #include <memory>
 #include <vector>
 
-#include "random.h"
 #include "structs/location.h"
 #include "structs/province_statistics.h"
 #include "tile.h"

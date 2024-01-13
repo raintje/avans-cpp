@@ -6,16 +6,16 @@
 #include <stdexcept>
 
 namespace util {
-class Random {
+class RandomWrapper {
  public:
   /// @brief Prohibit copy and move (singleton).
-  Random(const Random &) = delete;
-  Random(Random &&) = delete;
-  Random &operator=(const Random &) = delete;
-  Random &operator=(Random &&) = delete;
+  RandomWrapper(const RandomWrapper &) = delete;
+  RandomWrapper(RandomWrapper &&) = delete;
+  RandomWrapper &operator=(const RandomWrapper &) = delete;
+  RandomWrapper &operator=(RandomWrapper &&) = delete;
 
   /// @brief Returns the singleton instance of the RandomEngine wrapper.
-  static Random *GetInstance();
+  static RandomWrapper *GetInstance();
 
   /// @brief Generates a random integer between the two given integers.
   ///
@@ -35,10 +35,10 @@ class Random {
   T RandomItemFromVector(const std::vector<T> &vec);
 
   /// @brief Default deconstructor.
-  ~Random();
+  ~RandomWrapper();
  private:
   std::default_random_engine engine_;
-  Random() : engine_(std::random_device{}()) {}
+  RandomWrapper() : engine_(std::random_device{}()) {}
 };
 } // namespace util
 

@@ -6,8 +6,10 @@ SET(CMAKE_CXX_STANDARD 20)
 ADD_EXECUTABLE(${PROJECT_NAME}
         src/main.cc
         src/drawing/prompt_drawer.cc
+        src/state/game.cc
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         db
+        util
         domain)

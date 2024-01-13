@@ -3,15 +3,18 @@
 
 #include <memory>
 
-#include "player.h"
-#include "enum/tile_type.h"
 #include "structs/location.h"
 
 namespace domain::models {
 class Tile {
  public:
-  [[nodiscard]]virtual structs::Location GetLocation() const = 0;
-  [[nodiscard]]virtual char GetDrawChar() const = 0;
+  explicit Tile(structs::Location location);
+  ~Tile();
+
+  [[nodiscard]]structs::Location GetLocation() const;
+  [[nodiscard]]virtual char GetDrawChar() const;
+ private:
+  structs::Location location_;
 };
 } // namespace domain::models
 
