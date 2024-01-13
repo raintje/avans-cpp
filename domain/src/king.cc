@@ -1,5 +1,4 @@
 #include "models/king.h"
-#include "random_wrapper.h"
 
 namespace domain::models {
 

@@ -22,6 +22,7 @@ class Land {
   ~Land();
 
   void EnterProvince(structs::Location location);
+  structs::ProvinceStatistics GetProvinceStatistics(int x, int y) const;
  private:
   std::map<structs::Location, structs::ProvinceStatistics> province_statistics_;
   std::unique_ptr<Province> current_province_;

@@ -11,14 +11,5 @@ int RandomWrapper::RandomIntInRange(const int min, const int max) {
   return dist(engine_);
 }
 
-template<typename T>
-T RandomWrapper::RandomItemFromVector(const std::vector<T> &vec) {
-  if (vec.empty())
-    throw std::invalid_argument("[RandomItemFromVector]: Empty vector passed.");
-
-  std::uniform_int_distribution<size_t> dist{0, vec.size() - 1};
-  return vec[dist(engine_)];
-}
-
 RandomWrapper::~RandomWrapper() = default;
 } // namespace util

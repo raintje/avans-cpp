@@ -24,6 +24,10 @@ void Land::EnterProvince(const structs::Location location) {
   current_province_ = std::make_unique<Province>(location, province_statistics_[location]);
 }
 
+structs::ProvinceStatistics Land::GetProvinceStatistics(const int x, const int y) const {
+  return province_statistics_.at({x, y});
+}
+
 Land::~Land() = default;
 
 } // namespace domain::models

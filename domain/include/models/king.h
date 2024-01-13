@@ -7,6 +7,7 @@ constexpr int KING_THREAT_LEVEL = 5;
 
 #include "tile.h"
 #include "db_wrapper.h"
+#include "random_wrapper.h"
 #include "structs/location.h"
 
 namespace domain::models {

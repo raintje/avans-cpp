@@ -32,7 +32,13 @@ class RandomWrapper {
   ///
   /// @return A random element from the given vector.
   template<typename T>
-  T RandomItemFromVector(const std::vector<T> &vec);
+  T RandomItemFromVector(const std::vector<T> &vec) {
+    if (vec.empty())
+      throw std::invalid_argument("[RandomItemFromVector]: Empty vector passed.");
+
+    std::uniform_int_distribution<size_t> dist{0, vec.size() - 1};
+    return vec[dist(engine_)];
+  };
 
   /// @brief Default deconstructor.
   ~RandomWrapper();
