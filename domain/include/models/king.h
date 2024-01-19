@@ -3,22 +3,21 @@
 
 constexpr int KING_THREAT_LEVEL = 5;
 
-#include <unordered_map>
+#include <map>
 
 #include "tile.h"
 #include "db_wrapper.h"
 #include "random_wrapper.h"
-#include "structs/location.h"
+#include "encounter.h"
 
 namespace domain::models {
 
-class King : public Tile {
+class King : public Encounter {
  public:
-  explicit King(structs::Location location);
-
-  [[nodiscard]]char GetDrawChar() const override;
+  explicit King();
+  void Interact(models::Player player) override;
  private:
-  std::unordered_map<int, int> warband_;
+  std::map<int, int> warband_;
 };
 
 } // namespace domain::models

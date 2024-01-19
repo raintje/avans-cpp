@@ -4,22 +4,20 @@
 constexpr int STARTING_GOLD = 100;
 constexpr int STARTING_PROVISIONS = 10;
 
-#include <unordered_map>
-
-#include "tile.h"
+#include <map>
 
 namespace domain::models {
-class Player : public Tile {
+class Player {
  public:
-  explicit Player(structs::Location location);
+  explicit Player(std::pair<int, int> location);
   ~Player();
 
   [[nodiscard]]int GetGold() const;
   [[nodiscard]]int GetProvisions() const;
-  [[nodiscard]]char GetDrawChar() const override;
 
  private:
-  std::unordered_map<int, int> warband_;
+  std::map<int, int> warband_;
+  std::pair<int, int> location_;
   int gold_;
   int provisions_;
 };

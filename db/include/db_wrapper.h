@@ -43,9 +43,9 @@ class DbWrapper {
   /// @returns A vector containing all the troop types as std::strings.
   [[nodiscard]]std::vector<std::string> GetTroopTypes() const;
 
-  /// @brief Fetches troop information by faction.
+  /// @brief Fetches troop information by faction_.
   ///
-  /// @param faction The faction of the troop in the database.
+  /// @param faction The faction_ of the troop in the database.
   /// @returns A tuple containing all the information about the troop.
   [[nodiscard]]int GetTroopIdByFaction(const std::string &faction) const;
 

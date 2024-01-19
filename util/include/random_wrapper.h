@@ -25,6 +25,12 @@ class RandomWrapper {
   /// @returns A randomly generated integer between min and max.
   int RandomIntInRange(int min, int max);
 
+  /// @brief Generates an integer between 0-100 and returns whether it's bigger or smaller than the given number.
+  ///
+  /// @param chance The percentage chance, from 0-100.
+  /// @returns Whether or not the percent chance was hit.
+  bool PercentChance(int chance);
+
   /// @brief Returns a random item from the given vector.
   ///
   /// @tparam T The type of the elements contained in the vector.

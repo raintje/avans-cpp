@@ -5,12 +5,10 @@ namespace domain::models {
 int Player::GetGold() const { return gold_; }
 int Player::GetProvisions() const { return provisions_; }
 
-char Player::GetDrawChar() const { return 'K'; }
-
-Player::Player(structs::Location location) :
-    Tile(location),
+Player::Player(std::pair<int, int> location) :
     gold_(STARTING_GOLD),
-    provisions_(STARTING_PROVISIONS) {}
+    provisions_(STARTING_PROVISIONS),
+    location_(std::move(location)) {}
 
 Player::~Player() = default;
 

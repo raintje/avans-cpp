@@ -5,18 +5,18 @@ namespace domain::models {
 Land::Land() : current_province_(nullptr) {
   for (int y = 0; y < LAND_SIZE; ++y) {
     for (int x = 0; x < LAND_SIZE; ++x) {
-      structs::Location loc = {x, y};
+      std::pair<int, int> loc = {x, y};
       structs::ProvinceStatistics stats = {
           util::RandomWrapper::GetInstance()->RandomIntInRange(0, MAX_CITIES),
           util::RandomWrapper::GetInstance()->RandomIntInRange(0, MAX_VILLAGES),
           util::RandomWrapper::GetInstance()->RandomIntInRange(0, MAX_MOUNTAINS)
       };
-      province_statistics_.emplace(loc, stats);
+      province_statistics_[loc] = stats;
     }
   }
 }
 
-void Land::EnterProvince(const structs::Location location) {
+void Land::EnterProvince(const std::pair<int, int> location) {
   if (current_province_ != nullptr) {
     previous_provinces_.emplace(current_province_->GetLocation(),
                                 std::move(current_province_));

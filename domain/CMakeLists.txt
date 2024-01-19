@@ -10,6 +10,8 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
         src/enemy.cc
         src/king.cc
         src/tile.cc
+        src/city.cc
+        src/village.cc
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

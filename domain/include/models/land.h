@@ -11,7 +11,6 @@ constexpr int MAX_MOUNTAINS = 4;
 
 #include "random_wrapper.h"
 
-#include "structs/location.h"
 #include "structs/province_statistics.h"
 #include "province.h"
 
@@ -21,12 +20,12 @@ class Land {
   Land();
   ~Land();
 
-  void EnterProvince(structs::Location location);
-  structs::ProvinceStatistics GetProvinceStatistics(int x, int y) const;
+  void EnterProvince(std::pair<int, int> location);
+  [[nodiscard]] structs::ProvinceStatistics GetProvinceStatistics(int x, int y) const;
  private:
-  std::map<structs::Location, structs::ProvinceStatistics> province_statistics_;
+  std::map<std::pair<int, int>, structs::ProvinceStatistics> province_statistics_;
   std::unique_ptr<Province> current_province_;
-  std::map<structs::Location, std::unique_ptr<Province>> previous_provinces_;
+  std::map<std::pair<int, int>, std::unique_ptr<Province>> previous_provinces_;
 };
 } // namespace domain::models
 

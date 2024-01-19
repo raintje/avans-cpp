@@ -11,5 +11,9 @@ int RandomWrapper::RandomIntInRange(const int min, const int max) {
   return dist(engine_);
 }
 
+bool RandomWrapper::PercentChance(int chance) {
+  return RandomIntInRange(0, 100) > chance;
+}
+
 RandomWrapper::~RandomWrapper() = default;
 } // namespace util

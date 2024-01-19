@@ -3,18 +3,25 @@
 
 #include <memory>
 
-#include "structs/location.h"
+#include "enums/tile_type.h"
+#include "encounter.h"
 
 namespace domain::models {
 class Tile {
  public:
-  explicit Tile(structs::Location location);
+  Tile(enums::TileType type, std::pair<int, int> location);
   ~Tile();
 
-  [[nodiscard]]structs::Location GetLocation() const;
-  [[nodiscard]]virtual char GetDrawChar() const;
+  void SetEncounter(std::unique_ptr<Encounter> encounter);
+  void SetType(enums::TileType type);
+
+  [[nodiscard]]enums::TileType GetType();
+  [[nodiscard]]char GetDrawChar() const;
+  [[nodiscard]]std::pair<int, int> GetLocation() const;
  private:
-  structs::Location location_;
+  std::unique_ptr<Encounter> encounter_;
+  std::pair<int, int> location_;
+  enums::TileType type_;
 };
 } // namespace domain::models
 

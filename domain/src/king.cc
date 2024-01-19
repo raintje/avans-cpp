@@ -2,7 +2,7 @@
 
 namespace domain::models {
 
-King::King(structs::Location location) : Tile(location) {
+King::King() {
   auto t = db::DbWrapper::GetInstance()->GetThreatLevel(KING_THREAT_LEVEL);
   auto tc = util::RandomWrapper::GetInstance()->RandomIntInRange(t.first, t.second);
   auto f = db::DbWrapper::GetInstance()->GetFactions();
@@ -16,6 +16,6 @@ King::King(structs::Location location) : Tile(location) {
   }
 }
 
-char King::GetDrawChar() const { return '$'; }
+void King::Interact(models::Player player) {}
 
 } // namespace domain::models

@@ -6,8 +6,7 @@
 
 namespace domain::models {
 
-Enemy::Enemy(structs::Location location, std::string faction, const int threat_level) :
-    Tile(location),
+Enemy::Enemy(std::string faction, const int threat_level) :
     faction_(std::move(faction)),
     gold_(util::RandomWrapper::GetInstance()->RandomIntInRange(INITIAL_GOLD_MIN, INITIAL_GOLD_MAX)),
     provisions_(util::RandomWrapper::GetInstance()->RandomIntInRange(0, INITIAL_PROVISIONS_MAX)) {
@@ -16,6 +15,8 @@ Enemy::Enemy(structs::Location location, std::string faction, const int threat_l
   troops_.emplace(db::DbWrapper::GetInstance()->GetTroopIdByFaction(faction_), troop_count);
 }
 
-char Enemy::GetDrawChar() const { return '*'; }
+void Enemy::Interact(models::Player player) {
+
+}
 
 } // namespace domain::models
