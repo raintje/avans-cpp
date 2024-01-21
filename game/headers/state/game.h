@@ -37,6 +37,7 @@ class Game {
   bool running_;
   std::unique_ptr<domain::models::Player> player_;
   std::unique_ptr<domain::models::Land> land_;
+  std::shared_ptr<drawing::DomainDrawer> domain_drawer_;
   std::pair<int, int> selected_province_;
   enums::GameState state_;
 };

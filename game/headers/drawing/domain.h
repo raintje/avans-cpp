@@ -7,11 +7,17 @@
 
 namespace game::drawing {
 
-static void DrawLand(domain::models::Land *land, std::pair<int, int> selected_province);
-static void DrawProvince(domain::models::Province *province);
-static void DrawWarband(std::map<int, int> *warband);
-static void DrawCityInteraction(domain::models::City *city);
-static void DrawVillageInteraction(domain::models::Village *village);
+class DomainDrawer {
+ public:
+  DomainDrawer();
+  ~DomainDrawer();
+
+  void DrawLand(domain::models::Land *land, std::pair<int, int> selected_province);
+  void DrawProvince(domain::models::Province *province);
+  void DrawWarband(std::map<int, int> *warband);
+  void DrawCityInteraction();
+  void DrawVillageInteraction();
+};
 
 } // namespace game::drawing::domain
 

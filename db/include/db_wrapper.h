@@ -55,6 +55,8 @@ class DbWrapper {
   /// @returns A tuple containing all the information about the troop, in this order: ID, Faction, Type, Name and Price.
   [[nodiscard]]std::tuple<int, std::string, std::string, std::string, int> GetTroopDataById(int id) const;
 
+  [[nodiscard]]std::string GetTroopTypeById(int id) const;
+
   // Destructor to clean up DB connection.
   ~DbWrapper();
  private:

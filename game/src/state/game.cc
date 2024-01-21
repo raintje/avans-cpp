@@ -7,6 +7,7 @@ Game::Game() :
     player_(std::make_unique<domain::models::Player>()),
     state_(enums::SHOWING_LAND),
     land_(std::make_unique<domain::models::Land>()),
+    domain_drawer_(std::make_shared<drawing::DomainDrawer>()),
     selected_province_({0, 0}) {}
 Game::~Game() = default;
 
@@ -18,11 +19,11 @@ void Game::RunGame() {
   while (running_) {
     drawing::DrawStatistics(player_.get());
     switch (state_) {
-      case enums::SHOWING_LAND:drawing::DrawLand(land_.get(), selected_province_);
+      case enums::SHOWING_LAND:domain_drawer_->DrawLand(land_.get(), selected_province_);
         break;
-      case enums::SHOWING_PROVINCE:drawing::DrawProvince(land_->GetCurrentProvince());
+      case enums::SHOWING_PROVINCE:domain_drawer_->DrawProvince(land_->GetCurrentProvince());
         break;
-      case enums::SHOWING_WARBAND:drawing::DrawWarband(player_->GetWarband());
+      case enums::SHOWING_WARBAND:domain_drawer_->DrawWarband(player_->GetWarband());
         break;
     }
     std::string input;

@@ -7,11 +7,10 @@ ADD_EXECUTABLE(${PROJECT_NAME}
         src/main.cc
         src/state/game.cc
         src/command/move_command.cc
-        src/drawing/domain.cc
-        src/drawing/hud.cc
         src/logic/movement_controller.cc
         src/logic/battle_controller.cc
-        headers/drawing/logic.h
+        src/drawing/domain.cc
+        src/drawing/hud.cc
         src/drawing/logic.cc
 )
 

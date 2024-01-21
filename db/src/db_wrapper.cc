@@ -140,4 +140,25 @@ std::tuple<int, std::string, std::string, std::string, int> DbWrapper::GetTroopD
   return std::make_tuple(id, faction, type, name, price);
 }
 
+std::string DbWrapper::GetTroopTypeById(int id) const {
+  std::string q = "SELECT soort FROM 'maschappen' WHERE ID = ?";
+  sqlite3_stmt *s = nullptr;
+
+  if (sqlite3_prepare_v2(db_, q.c_str(), -1, &s, nullptr) != SQLITE_OK) {
+    std::cerr << sqlite3_errmsg(db_) << std::endl;
+  }
+
+  if (sqlite3_bind_int(s, 1, id) != SQLITE_OK) {
+    std::cerr << sqlite3_errmsg(db_) << std::endl;
+  }
+
+  std::string faction;
+  while (sqlite3_step(s) == SQLITE_ROW) {
+    faction = reinterpret_cast<const char *>(sqlite3_column_text(s, 0));
+  }
+
+  sqlite3_finalize(s);
+  return faction;
+}
+
 } // db

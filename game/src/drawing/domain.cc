@@ -2,7 +2,10 @@
 
 namespace game::drawing {
 
-static void DrawLand(domain::models::Land *land, std::pair<int, int> selected_province) {
+DomainDrawer::DomainDrawer() = default;
+DomainDrawer::~DomainDrawer() = default;
+
+void DomainDrawer::DrawLand(domain::models::Land *land, std::pair<int, int> selected_province) {
   for (int y = 0; y < LAND_SIZE; ++y) {
     for (int x = 0; x < LAND_SIZE; ++x) {
       auto s = land->GetProvinceStatistics(x, y);
@@ -18,7 +21,7 @@ static void DrawLand(domain::models::Land *land, std::pair<int, int> selected_pr
   }
 }
 
-static void DrawProvince(domain::models::Province *province) {
+void DomainDrawer::DrawProvince(domain::models::Province *province) {
   for (int y = 0; y < PROVINCE_SIZE; ++y) {
     for (int x = 0; x < PROVINCE_SIZE; ++x) {
       auto t = province->GetTileByLocation({x, y});
@@ -28,7 +31,7 @@ static void DrawProvince(domain::models::Province *province) {
   }
 }
 
-void DrawWarband(std::map<int, int> *warband) {
+void DomainDrawer::DrawWarband(std::map<int, int> *warband) {
   int counter = 1;
   std::cout << "\033[4m" << "------KRIJGSBENDE------" << "\033[24m" << std::endl;
   for (auto k : *warband) {
@@ -38,13 +41,13 @@ void DrawWarband(std::map<int, int> *warband) {
   }
 }
 
-void DrawCityInteraction(domain::models::Village *village) {
+void DomainDrawer::DrawCityInteraction() {
   std::cout << "Je benadert de stad, wat zou je willen doen?" << std::endl;
   std::cout << "1. Manschappen rekruteren." << std::endl;
   std::cout << "2. Proviand inslaan." << std::endl;
 }
 
-void DrawVillageInteraction(domain::models::Village *village) {
+void DomainDrawer::DrawVillageInteraction() {
   std::cout << "Je benadert het dorp, wat zou je willen doen?" << std::endl;
   std::cout << "1. Manschappen rekruteren." << std::endl;
   std::cout << "2. Proviand inslaan." << std::endl;
