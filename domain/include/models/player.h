@@ -6,18 +6,29 @@ constexpr int STARTING_PROVISIONS = 10;
 
 #include <map>
 
+#include "random_wrapper.h"
+#include "db_wrapper.h"
+#include "tile_contents.h"
+
 namespace domain::models {
-class Player {
+class Player : public TileContents {
  public:
-  explicit Player(std::pair<int, int> location);
-  ~Player();
+  Player();
+  ~Player() override;
 
   [[nodiscard]]int GetGold() const;
+  void ReduceGoldBy(int gold);
+  void IncreaseGoldBy(int gold);
+
   [[nodiscard]]int GetProvisions() const;
+  void ReduceProvisionsBy(int provisions);
+  void IncreaseProvisionsBy(int provisions);
+
+  [[nodiscard]]std::map<int, int> *GetWarband();
+  void AddTroops(int id);
 
  private:
   std::map<int, int> warband_;
-  std::pair<int, int> location_;
   int gold_;
   int provisions_;
 };

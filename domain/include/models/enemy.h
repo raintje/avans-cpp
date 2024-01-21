@@ -9,17 +9,20 @@ constexpr int INITIAL_PROVISIONS_MAX = 5;
 #include <string>
 #include <map>
 
-#include "encounter.h"
+#include "tile_contents.h"
 
 namespace domain::models {
 
-class Enemy : public Encounter {
+class Enemy : public TileContents {
  public:
   Enemy(std::string faction, int threat_level);
-  void Interact(models::Player player) override;
+  ~Enemy() override;
+
+  [[nodiscard]]int GetGold() const;
+  [[nodiscard]]int GetProvisions() const;
  private:
   const std::string faction_;
-  std::map<int, int> troops_;
+  std::map<int, int> warband_;
   const int gold_;
   const int provisions_;
 };

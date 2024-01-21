@@ -16,6 +16,6 @@ King::King() {
   }
 }
 
-void King::Interact(models::Player player) {}
+King::~King() = default;
 
 } // namespace domain::models

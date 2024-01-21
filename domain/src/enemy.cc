@@ -12,11 +12,12 @@ Enemy::Enemy(std::string faction, const int threat_level) :
     provisions_(util::RandomWrapper::GetInstance()->RandomIntInRange(0, INITIAL_PROVISIONS_MAX)) {
   auto t = db::DbWrapper::GetInstance()->GetThreatLevel(threat_level);
   int troop_count = util::RandomWrapper::GetInstance()->RandomIntInRange(t.first, t.second);
-  troops_.emplace(db::DbWrapper::GetInstance()->GetTroopIdByFaction(faction_), troop_count);
+  warband_.emplace(db::DbWrapper::GetInstance()->GetTroopIdByFaction(faction_), troop_count);
 }
 
-void Enemy::Interact(models::Player player) {
+int Enemy::GetGold() const { return gold_; }
+int Enemy::GetProvisions() const { return provisions_; }
 
-}
+Enemy::~Enemy() = default;
 
 } // namespace domain::models

@@ -1,12 +1,27 @@
 #ifndef DOMAIN_INCLUDE_MODELS_VILLAGE_H
 #define DOMAIN_INCLUDE_MODELS_VILLAGE_H
 
-#include "encounter.h"
+constexpr int MIN_TROOPS_VILLAGE = 1;
+constexpr int MAX_TROOPS_VILLAGE = 10;
+constexpr int MIN_PROVISIONS_VILLAGE = 10;
+constexpr int MAX_PROVISIONS_VILLAGE = 100;
+constexpr int PROVISION_PRICE_VILLAGE = 1;
+
+#include "player.h"
+#include "tile_contents.h"
 
 namespace domain::models {
-class Village : public Encounter {
+class Village : public TileContents {
  public:
-  void Interact(domain::models::Player player) override;
+  explicit Village(const std::string &faction);
+  ~Village() override;
+
+  [[nodiscard]]int GetTroopId() const;
+  void BuyTroops(Player *p, int amount) const;
+  void BuyProvisions(Player *p, int amount) const;
+ private:
+  int provisions_;
+  std::pair<int, int> troops_;
 };
 } // namespace domain::models
 #endif //DOMAIN_INCLUDE_MODELS_VILLAGE_H

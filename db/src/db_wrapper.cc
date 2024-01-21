@@ -51,6 +51,7 @@ std::pair<int, int> DbWrapper::GetThreatLevel(const int lvl) const {
     max = sqlite3_column_int(s, 1);
   }
 
+  sqlite3_finalize(s);
   return std::make_pair(min, max);
 }
 
@@ -71,6 +72,7 @@ int DbWrapper::GetChanceToHit(const int atk, const int tar) const {
     chance = sqlite3_column_int(s, 0);
   }
 
+  sqlite3_finalize(s);
   return chance;
 }
 
@@ -88,6 +90,7 @@ std::vector<std::string> DbWrapper::GetTroopTypes() const {
     results.push_back(f);
   }
 
+  sqlite3_finalize(s);
   return results;
 }
 
@@ -108,6 +111,7 @@ int DbWrapper::GetTroopIdByFaction(const std::string &faction) const {
     id = sqlite3_column_int(s, 0);
   }
 
+  sqlite3_finalize(s);
   return id;
 }
 
@@ -132,6 +136,7 @@ std::tuple<int, std::string, std::string, std::string, int> DbWrapper::GetTroopD
     price = sqlite3_column_int(s, 3);
   }
 
+  sqlite3_finalize(s);
   return std::make_tuple(id, faction, type, name, price);
 }
 

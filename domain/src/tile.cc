@@ -5,7 +5,7 @@ namespace domain::models {
 Tile::Tile(enums::TileType type, std::pair<int, int> location) :
     type_(type),
     location_(std::move(location)),
-    encounter_(nullptr) {}
+    contents_(nullptr) {}
 
 Tile::~Tile() = default;
 
@@ -21,9 +21,9 @@ char Tile::GetDrawChar() const {
   }
 }
 
-void Tile::SetEncounter(std::unique_ptr<models::Encounter> encounter) {
-  if (encounter_ != nullptr) encounter_ = nullptr;
-  encounter_ = std::move(encounter);
+void Tile::SetTileContents(std::unique_ptr<models::TileContents> encounter) {
+  if (contents_ != nullptr) contents_ = nullptr;
+  contents_ = std::move(encounter);
 }
 
 void Tile::SetType(enums::TileType type) { type_ = type; }

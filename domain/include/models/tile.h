@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "enums/tile_type.h"
-#include "encounter.h"
+#include "tile_contents.h"
 
 namespace domain::models {
 class Tile {
@@ -12,14 +12,14 @@ class Tile {
   Tile(enums::TileType type, std::pair<int, int> location);
   ~Tile();
 
-  void SetEncounter(std::unique_ptr<Encounter> encounter);
+  void SetTileContents(std::unique_ptr<models::TileContents> encounter);
   void SetType(enums::TileType type);
 
   [[nodiscard]]enums::TileType GetType();
   [[nodiscard]]char GetDrawChar() const;
   [[nodiscard]]std::pair<int, int> GetLocation() const;
  private:
-  std::unique_ptr<Encounter> encounter_;
+  std::unique_ptr<TileContents> contents_;
   std::pair<int, int> location_;
   enums::TileType type_;
 };

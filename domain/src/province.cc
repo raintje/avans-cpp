@@ -1,6 +1,7 @@
 #include "models/province.h"
 
 namespace domain::models {
+
 Province::Province(std::pair<int, int> location, structs::ProvinceStatistics province_statistics) :
     location_(std::move(location)),
     faction_(util::RandomWrapper::GetInstance()->RandomItemFromVector(
@@ -14,9 +15,11 @@ Province::Province(std::pair<int, int> location, structs::ProvinceStatistics pro
   GenerateProvince(province_statistics);
   GenerateEnemies();
 }
+
 Province::~Province() = default;
 
 std::pair<int, int> Province::GetLocation() const { return location_; }
+
 Tile *Province::GetTileByLocation(std::pair<int, int> location) const {
   auto it = std::find_if(tiles_.begin(),
                          tiles_.end(),
@@ -26,6 +29,7 @@ Tile *Province::GetTileByLocation(std::pair<int, int> location) const {
 }
 
 void Province::GenerateMountain(std::pair<int, int> location) const {
+
   auto center = GetTileByLocation(location);
   center->SetType(enums::MOUNTAIN);
 
@@ -92,7 +96,7 @@ void Province::GenerateEnemies() {
       if (t != nullptr && t->GetType() == enums::EMPTY) {
         int threatLevel = util::RandomWrapper::GetInstance()->RandomIntInRange(0, 4);
 
-        t->SetEncounter(std::move(std::make_unique<Enemy>(faction_, threatLevel)));
+        t->SetTileContents(std::move(std::make_unique<Enemy>(faction_, threatLevel)));
         t->SetType(enums::ENEMY);
 
         enemy_generated = true;
@@ -101,24 +105,31 @@ void Province::GenerateEnemies() {
   }
 }
 
+void Province::ClearEnemies() {
+  for (auto &t : tiles_) {
+    if (t->GetType() == enums::ENEMY) t->SetType(enums::EMPTY);
+    t->SetTileContents(nullptr);
+  }
+}
+
 void Province::GenerateProvince(structs::ProvinceStatistics province_statistics) {
   for (int i = 0; i < province_statistics.num_mountains; ++i) {
-    auto ran_loc = std::make_pair(util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE),
-                                  util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE));
+    auto ran_loc = std::make_pair(util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1),
+                                  util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1));
     GenerateMountain(ran_loc);
   }
 
   for (int i = 0; i < province_statistics.num_cities; ++i) {
     bool city_generated = false;
     while (!city_generated) {
-      auto ran_loc = std::make_pair(util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE),
-                                    util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE));
+      auto ran_loc = std::make_pair(util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1),
+                                    util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1));
 
       auto t = GetTileByLocation(ran_loc);
 
       if (t != nullptr && t->GetType() == enums::EMPTY) {
         t->SetType(enums::CITY);
-        t->SetEncounter(std::move(std::make_unique<City>()));
+        t->SetTileContents(std::move(std::make_unique<City>(faction_)));
         city_generated = true;
       }
     }
@@ -127,14 +138,14 @@ void Province::GenerateProvince(structs::ProvinceStatistics province_statistics)
   for (int i = 0; i < province_statistics.num_villages; ++i) {
     bool village_generated = false;
     while (!village_generated) {
-      auto ran_loc = std::make_pair(util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE),
-                                    util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE));
+      auto ran_loc = std::make_pair(util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1),
+                                    util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1));
 
       auto t = GetTileByLocation(ran_loc);
 
       if (t != nullptr && t->GetType() == enums::EMPTY) {
         t->SetType(enums::VILLAGE);
-        t->SetEncounter(std::move(std::make_unique<Village>()));
+        t->SetTileContents(std::move(std::make_unique<Village>(faction_)));
         village_generated = true;
       }
     }

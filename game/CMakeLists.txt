@@ -5,9 +5,18 @@ SET(CMAKE_CXX_STANDARD 20)
 
 ADD_EXECUTABLE(${PROJECT_NAME}
         src/main.cc
-        src/drawing/prompt_drawer.cc
         src/state/game.cc
+        src/command/move_command.cc
+        src/drawing/domain.cc
+        src/drawing/hud.cc
+        src/logic/movement_controller.cc
+        src/logic/battle_controller.cc
+        headers/drawing/logic.h
+        src/drawing/logic.cc
 )
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+        headers)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         db

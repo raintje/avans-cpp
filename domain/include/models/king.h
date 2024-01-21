@@ -8,14 +8,14 @@ constexpr int KING_THREAT_LEVEL = 5;
 #include "tile.h"
 #include "db_wrapper.h"
 #include "random_wrapper.h"
-#include "encounter.h"
+#include "tile_contents.h"
 
 namespace domain::models {
 
-class King : public Encounter {
+class King : public TileContents {
  public:
   explicit King();
-  void Interact(models::Player player) override;
+  ~King() override;
  private:
   std::map<int, int> warband_;
 };

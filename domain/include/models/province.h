@@ -31,12 +31,15 @@ class Province {
   /// @brief Getter for a pointer to the Tile vector.
   [[nodiscard]]Tile *GetTileByLocation(std::pair<int, int> location) const;
 
+  /// @brief Randomly generates 1-3 enemies on random empty tiles in the province.
+  void GenerateEnemies();
+
+  /// @brief Clears all the enemies on the map.
+  void ClearEnemies();
+
  private:
   /// @brief Generates the entities on the province map.
   void GenerateProvince(structs::ProvinceStatistics province_statistics);
-
-  /// @brief Randomly generates 1-3 enemies on random empty tiles in the province.
-  void GenerateEnemies();
 
   /// @brief Generates a mountain in a 3x3 radius around the given point.
   void GenerateMountain(std::pair<int, int> location) const;
