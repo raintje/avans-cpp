@@ -19,7 +19,11 @@ class City : public TileContents {
   explicit City(const std::string &faction);
   ~City() override;
 
+  void Interact() override;
+
   [[nodiscard]]int GetTroopId() const;
+  [[nodiscard]]int GetTroopCount() const;
+
   void BuyTroops(Player *p, int amount) const;
   void BuyProvisions(Player *p, int amount) const;
  private:

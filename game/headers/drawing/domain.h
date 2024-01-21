@@ -12,11 +12,9 @@ class DomainDrawer {
   DomainDrawer();
   ~DomainDrawer();
 
-  void DrawLand(domain::models::Land *land, std::pair<int, int> selected_province);
-  void DrawProvince(domain::models::Province *province);
-  void DrawWarband(std::map<int, int> *warband);
-  void DrawCityInteraction();
-  void DrawVillageInteraction();
+  static void DrawLand(domain::models::Land *land, std::pair<int, int> selected_province);
+  static void DrawProvince(domain::models::Province *province);
+  static void DrawWarband(domain::models::Player *p);
 };
 
 } // namespace game::drawing::domain

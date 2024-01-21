@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "../include/models/player.h"
 
 namespace domain::models {
@@ -11,9 +13,9 @@ void Player::ReduceProvisionsBy(int provisions) { provisions_ -= provisions; }
 void Player::IncreaseProvisionsBy(int provisions) { provisions_ += provisions; }
 
 std::map<int, int> *Player::GetWarband() { return &warband_; }
-void Player::AddTroops(int id) {
-  if (warband_.contains(id)) warband_[id]++;
-  else warband_.insert({id, 1});
+void Player::AddTroops(int id, int amount) {
+  if (warband_.contains(id)) warband_[id] += amount;
+  else warband_.insert({id, amount});
 }
 
 Player::Player() :
@@ -23,9 +25,15 @@ Player::Player() :
   for (int i = 0; i <= troop_amount; ++i) {
     auto id = util::RandomWrapper::GetInstance()->RandomIntInRange(1,
                                                                    static_cast<int>(db::DbWrapper::GetInstance()->GetTroopTypes().size()));
-    AddTroops(id);
+    AddTroops(id, 1);
   }
 }
+
+void Player::SetLocation(std::pair<int, int> location) { location_ = std::move(location); }
+std::pair<int, int> Player::GetLocation() { return location_; }
+
+void Player::SetProvince(const std::pair<int, int> &province) { current_province_ = province; }
+std::pair<int, int> Player::GetProvince() { return current_province_; }
 
 Player::~Player() = default;
 

@@ -11,10 +11,10 @@ constexpr int STARTING_PROVISIONS = 10;
 #include "tile_contents.h"
 
 namespace domain::models {
-class Player : public TileContents {
+class Player {
  public:
-  Player();
-  ~Player() override;
+  explicit Player();
+  ~Player();
 
   [[nodiscard]]int GetGold() const;
   void ReduceGoldBy(int gold);
@@ -25,9 +25,17 @@ class Player : public TileContents {
   void IncreaseProvisionsBy(int provisions);
 
   [[nodiscard]]std::map<int, int> *GetWarband();
-  void AddTroops(int id);
+  void AddTroops(int id, int amount);
+
+  [[nodiscard]]std::pair<int, int> GetProvince();
+  void SetProvince(const std::pair<int, int> &province);
+
+  [[nodiscard]]std::pair<int, int> GetLocation();
+  void SetLocation(std::pair<int, int> location);
 
  private:
+  std::pair<int, int> location_;
+  std::pair<int, int> current_province_;
   std::map<int, int> warband_;
   int gold_;
   int provisions_;

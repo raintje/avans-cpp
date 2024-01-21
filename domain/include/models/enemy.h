@@ -18,6 +18,9 @@ class Enemy : public TileContents {
   Enemy(std::string faction, int threat_level);
   ~Enemy() override;
 
+  void Interact() override;
+
+  [[nodiscard]]std::map<int, int> *GetWarband();
   [[nodiscard]]int GetGold() const;
   [[nodiscard]]int GetProvisions() const;
  private:

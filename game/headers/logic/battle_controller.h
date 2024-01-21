@@ -17,16 +17,18 @@ class BattleController {
 
   void Start(std::map<int, int> *player_warband, std::map<int, int> *enemy_warband);
   void Round(const std::map<int, int> &player_warband, const std::map<int, int> &enemy_warband);
+  void Retreat(const std::map<int, int> &player_warband, const std::map<int, int> &enemy_warband);
+
   [[nodiscard]]static bool Attack(int attacker, int target);
-  [[nodiscard]]bool Retreat(std::map<int, int> player_warband, std::map<int, int> enemy_warband);
+  [[nodiscard]]static bool ConfirmDefeat(const std::map<int, int> &warband);
 
  private:
   static void SubtractLosses(std::map<int, int> warband, const std::pair<int, int> &losses);
-  [[nodiscard]]static bool ConfirmDefeat(const std::map<int, int> &warband);
   [[nodiscard]]static int FindTarget(const std::map<int, int> &warband);
   [[nodiscard]]static bool CheckTroopType(int id, int volley);
 
   bool battle_ongoing_;
+  std::shared_ptr<drawing::LogicDrawer> logic_drawer_;
 };
 } // namespace game::logic
 

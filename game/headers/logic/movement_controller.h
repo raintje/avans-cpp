@@ -1,9 +1,10 @@
 #ifndef GAME_HEADERS_LOGIC_MOVEMENT_CONTROLLER_H
 #define GAME_HEADERS_LOGIC_MOVEMENT_CONTROLLER_H
 
-#include <map>
+#include <vector>
 #include <utility>
 
+#include "models/player.h"
 #include "models/province.h"
 
 namespace game::logic {
@@ -12,11 +13,11 @@ class MovementController {
   MovementController();
   ~MovementController();
 
-  [[nodiscard]]std::map<std::string, domain::models::Tile *> CheckViableMoves(domain::models::Province *province,
-                                                                              std::pair<int, int> original_position);
-  void MovePlayerToTile(domain::models::Tile *start,
-                        domain::models::Tile *destination,
-                        std::unique_ptr<domain::models::Player> &player);
+  [[nodiscard]]std::vector<std::string> CheckViableMoves(domain::models::Province *province,
+                                                         std::pair<int, int> original_position);
+  void MovePlayer(domain::models::Player *player, domain::models::Province *province, std::pair<int, int> new_location);
+  std::pair<int, int> PrepareNextLocation(const std::string &command, domain::models::Player *p);
+  bool CheckIfMovementCommand(const std::string &command);
 };
 } // namespace game::logic
 

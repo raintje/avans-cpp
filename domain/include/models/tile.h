@@ -15,6 +15,7 @@ class Tile {
   void SetTileContents(std::unique_ptr<models::TileContents> encounter);
   void SetType(enums::TileType type);
 
+  [[nodiscard]]TileContents *GetTileContents();
   [[nodiscard]]enums::TileType GetType();
   [[nodiscard]]char GetDrawChar() const;
   [[nodiscard]]std::pair<int, int> GetLocation() const;

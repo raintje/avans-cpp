@@ -2,7 +2,9 @@
 
 namespace domain::models {
 
-King::King() {
+King::~King() = default;
+King::King() : province_(std::make_pair(util::RandomWrapper::GetInstance()->RandomIntInRange(1, 2),
+                                        util::RandomWrapper::GetInstance()->RandomIntInRange(1, 2))) {
   auto t = db::DbWrapper::GetInstance()->GetThreatLevel(KING_THREAT_LEVEL);
   auto tc = util::RandomWrapper::GetInstance()->RandomIntInRange(t.first, t.second);
   auto f = db::DbWrapper::GetInstance()->GetFactions();
@@ -16,6 +18,9 @@ King::King() {
   }
 }
 
-King::~King() = default;
+std::map<int, int> King::GetWarband() { return warband_; }
+std::pair<int, int> King::GetProvince() { return province_; }
+std::pair<int, int> King::GetLocation() { return location_; }
+void King::SetLocation(std::pair<int, int> location) { location_ = std::move(location); }
 
 } // namespace domain::models

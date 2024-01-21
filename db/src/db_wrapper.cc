@@ -30,6 +30,7 @@ std::vector<std::string> DbWrapper::GetFactions() const {
     results.push_back(f);
   }
 
+  sqlite3_finalize(s);
   return results;
 }
 
@@ -141,7 +142,7 @@ std::tuple<int, std::string, std::string, std::string, int> DbWrapper::GetTroopD
 }
 
 std::string DbWrapper::GetTroopTypeById(int id) const {
-  std::string q = "SELECT soort FROM 'maschappen' WHERE ID = ?";
+  std::string q = "SELECT soort FROM 'manschappen' WHERE ID = ?";
   sqlite3_stmt *s = nullptr;
 
   if (sqlite3_prepare_v2(db_, q.c_str(), -1, &s, nullptr) != SQLITE_OK) {

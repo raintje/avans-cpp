@@ -16,7 +16,12 @@ class Village : public TileContents {
   explicit Village(const std::string &faction);
   ~Village() override;
 
+  void Interact() override;
+
   [[nodiscard]]int GetTroopId() const;
+  [[nodiscard]]int GetTroopCount() const;
+  [[nodiscard]]int GetProvisions() const;
+
   void BuyTroops(Player *p, int amount) const;
   void BuyProvisions(Player *p, int amount) const;
  private:

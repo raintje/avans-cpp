@@ -12,11 +12,18 @@ constexpr int KING_THREAT_LEVEL = 5;
 
 namespace domain::models {
 
-class King : public TileContents {
+class King {
  public:
   explicit King();
-  ~King() override;
+  ~King();
+
+  [[nodiscard]]std::map<int, int> GetWarband();
+  [[nodiscard]]std::pair<int, int> GetProvince();
+  [[nodiscard]]std::pair<int, int> GetLocation();
+  void SetLocation(std::pair<int, int> location);
  private:
+  std::pair<int, int> location_;
+  std::pair<int, int> province_;
   std::map<int, int> warband_;
 };
 

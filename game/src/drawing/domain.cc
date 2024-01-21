@@ -31,26 +31,17 @@ void DomainDrawer::DrawProvince(domain::models::Province *province) {
   }
 }
 
-void DomainDrawer::DrawWarband(std::map<int, int> *warband) {
+void DomainDrawer::DrawWarband(domain::models::Player *p) {
   int counter = 1;
   std::cout << "\033[4m" << "------KRIJGSBENDE------" << "\033[24m" << std::endl;
-  for (auto k : *warband) {
+  for (auto k : *p->GetWarband()) {
     auto t = db::DbWrapper::GetInstance()->GetTroopDataById(k.first);
     std::cout << counter++ << ": " << std::get<3>(t) << std::endl;
     std::cout << "Aantal: " << k.second << " - Totaalprijs: " << std::get<4>(t) * k.second << std::endl;
   }
-}
 
-void DomainDrawer::DrawCityInteraction() {
-  std::cout << "Je benadert de stad, wat zou je willen doen?" << std::endl;
-  std::cout << "1. Manschappen rekruteren." << std::endl;
-  std::cout << "2. Proviand inslaan." << std::endl;
-}
-
-void DomainDrawer::DrawVillageInteraction() {
-  std::cout << "Je benadert het dorp, wat zou je willen doen?" << std::endl;
-  std::cout << "1. Manschappen rekruteren." << std::endl;
-  std::cout << "2. Proviand inslaan." << std::endl;
+  std::cout << "Goud: " << p->GetGold() << std::endl;
+  std::cout << "Provisies: " << p->GetProvisions() << std::endl;
 }
 
 } // namespace game::drawing

@@ -13,6 +13,8 @@ Village::Village(const std::string &faction) :
 Village::~Village() = default;
 
 int Village::GetTroopId() const { return troops_.first; }
+int Village::GetTroopCount() const { return troops_.second; }
+int Village::GetProvisions() const { return provisions_; }
 
 void Village::BuyTroops(domain::models::Player *p, int amount) const {
   if (troops_.second - amount < 0) {
@@ -28,7 +30,7 @@ void Village::BuyTroops(domain::models::Player *p, int amount) const {
       std::cout << "Niet voldoende goud om deze troepen te kopen!" << std::endl;
     } else {
       p->ReduceGoldBy(total);
-      p->AddTroops(GetTroopId());
+      p->AddTroops(GetTroopId(), amount);
     }
   }
 }
@@ -48,6 +50,14 @@ void Village::BuyProvisions(domain::models::Player *p, int amount) const {
       p->IncreaseProvisionsBy(amount);
     }
   }
+}
+
+void Village::Interact() {
+  std::cout << "Je benadert het dorp, wat zou je willen doen?" << std::endl;
+  std::cout << "1. Manschappen rekruteren." << std::endl;
+  std::cout << "2. Proviand inslaan." << std::endl;
+  std::cout << "3. Het dorp verlaten." << std::endl;
+  std::cout << "Type hier je keuze (1, 2, 3): " << std::endl;
 }
 
 } // namespace domain::models

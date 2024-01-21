@@ -8,17 +8,23 @@
 #include "models/tile.h"
 
 namespace game::drawing {
-// movement
-static void PrintViableMovementOptions(std::map<std::string, domain::models::Tile*> options);
+class LogicDrawer {
+ public:
+  LogicDrawer();
+  ~LogicDrawer();
 
-// vendors
-static void PrintTroopTransaction();
-static void PrintProvisionTransaction();
+  // movement
+  void PrintViableMovementOptions(std::map<std::string, domain::models::Tile *> options);
 
-// battle
-[[nodiscard]]static bool PrintBattlePrompt(bool first_turn);
-static void PrintAttack(int round, bool friendly, const std::string &troop_type, int amount);
-static void PrintTroopDeath(int round, bool friendly, const std::string &troop_type);
+  // vendors
+  void PrintTroopTransaction();
+  void PrintProvisionTransaction();
+
+  // battle
+  [[nodiscard]]static bool PrintBattlePrompt(bool first_turn);
+  void PrintAttack(int round, bool friendly, const std::string &troop_type, int amount);
+  void PrintTroopDeath(int round, bool friendly, const std::string &troop_type);
+};
 } // namespace game::drawing
 
 #endif //GAME_HEADERS_DRAWING_LOGIC_H

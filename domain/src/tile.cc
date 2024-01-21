@@ -29,5 +29,6 @@ void Tile::SetTileContents(std::unique_ptr<models::TileContents> encounter) {
 void Tile::SetType(enums::TileType type) { type_ = type; }
 enums::TileType Tile::GetType() { return type_; }
 std::pair<int, int> Tile::GetLocation() const { return location_; }
+TileContents *Tile::GetTileContents() { return contents_.get(); }
 
 } // namespace domain::models

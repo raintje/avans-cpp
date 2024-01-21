@@ -10,6 +10,7 @@ City::City(const std::string &faction) {
 City::~City() = default;
 
 int City::GetTroopId() const { return troops_.first; }
+int City::GetTroopCount() const { return troops_.second; }
 
 void City::BuyTroops(Player *p, int amount) const {
   if (troops_.second - amount < 0) {
@@ -25,7 +26,7 @@ void City::BuyTroops(Player *p, int amount) const {
       std::cout << "Niet voldoende goud om deze troepen te kopen!" << std::endl;
     } else {
       p->ReduceGoldBy(total);
-      p->AddTroops(GetTroopId());
+      p->AddTroops(GetTroopId(), amount);
     }
   }
 }
@@ -41,4 +42,11 @@ void City::BuyProvisions(Player *p, int amount) const {
   }
 }
 
-} // namespace domain::models
+void City::Interact() {
+  std::cout << "Je benadert de stad, wat zou je willen doen?" << std::endl;
+  std::cout << "1. Manschappen rekruteren." << std::endl;
+  std::cout << "2. Proviand inslaan." << std::endl;
+  std::cout << "3. De stad verlaten." << std::endl;
+  std::cout << "Type hier je keuze (1, 2, 3): " << std::endl;
+}
+}

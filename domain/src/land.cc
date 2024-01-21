@@ -2,13 +2,14 @@
 
 namespace domain::models {
 
-Land::Land() : current_province_(nullptr) {
+Land::Land() : current_province_(nullptr),
+               king_(std::make_unique<King>()) {
   for (int y = 0; y < LAND_SIZE; ++y) {
     for (int x = 0; x < LAND_SIZE; ++x) {
       std::pair<int, int> loc = {x, y};
       structs::ProvinceStatistics stats = {
           util::RandomWrapper::GetInstance()->RandomIntInRange(0, MAX_CITIES),
-          util::RandomWrapper::GetInstance()->RandomIntInRange(0, MAX_VILLAGES),
+          util::RandomWrapper::GetInstance()->RandomIntInRange(1, MAX_VILLAGES),
           util::RandomWrapper::GetInstance()->RandomIntInRange(0, MAX_MOUNTAINS)
       };
       province_statistics_[loc] = stats;
@@ -16,7 +17,7 @@ Land::Land() : current_province_(nullptr) {
   }
 }
 
-void Land::EnterProvince(const std::pair<int, int> location) {
+void Land::EnterProvince(const std::pair<int, int> location, Player *player) {
   if (current_province_ != nullptr) {
     current_province_->ClearEnemies();
     previous_provinces_.emplace(current_province_->GetLocation(),
@@ -27,6 +28,9 @@ void Land::EnterProvince(const std::pair<int, int> location) {
     current_province_ = std::move(previous_provinces_[location]);
     current_province_->GenerateEnemies();
   } else current_province_ = std::make_unique<Province>(location, province_statistics_[location]);
+
+  if (king_->GetProvince() == location) current_province_->GenerateKing(king_.get());
+  current_province_->GeneratePlayer(player);
 }
 
 structs::ProvinceStatistics Land::GetProvinceStatistics(const int x, const int y) const {
@@ -34,6 +38,8 @@ structs::ProvinceStatistics Land::GetProvinceStatistics(const int x, const int y
 }
 
 models::Province *Land::GetCurrentProvince() const { return current_province_.get(); }
+
+std::unique_ptr<King> *Land::GetKing() { return &king_; }
 
 Land::~Land() = default;
 

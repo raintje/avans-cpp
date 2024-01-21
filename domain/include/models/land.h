@@ -13,6 +13,7 @@ constexpr int MAX_MOUNTAINS = 4;
 
 #include "structs/province_statistics.h"
 #include "province.h"
+#include "king.h"
 
 namespace domain::models {
 class Land {
@@ -20,10 +21,12 @@ class Land {
   Land();
   ~Land();
 
-  void EnterProvince(std::pair<int, int> location);
+  void EnterProvince(std::pair<int, int> location, Player *player);
   [[nodiscard]] structs::ProvinceStatistics GetProvinceStatistics(int x, int y) const;
   [[nodiscard]] models::Province *GetCurrentProvince() const;
+  [[nodiscard]] std::unique_ptr<King> *GetKing();
  private:
+  std::unique_ptr<King> king_;
   std::map<std::pair<int, int>, structs::ProvinceStatistics> province_statistics_;
   std::unique_ptr<Province> current_province_;
   std::map<std::pair<int, int>, std::unique_ptr<Province>> previous_provinces_;

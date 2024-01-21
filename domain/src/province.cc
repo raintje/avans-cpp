@@ -5,7 +5,8 @@ namespace domain::models {
 Province::Province(std::pair<int, int> location, structs::ProvinceStatistics province_statistics) :
     location_(std::move(location)),
     faction_(util::RandomWrapper::GetInstance()->RandomItemFromVector(
-        db::DbWrapper::GetInstance()->GetFactions())) {
+        db::DbWrapper::GetInstance()->GetFactions())),
+    initial_(true) {
   for (int x = 0; x < PROVINCE_SIZE; ++x) {
     for (int y = 0; y < PROVINCE_SIZE; ++y) {
       auto new_loc = std::make_pair(x, y);
@@ -26,6 +27,50 @@ Tile *Province::GetTileByLocation(std::pair<int, int> location) const {
                          [&location](const std::unique_ptr<Tile> &obj) { return obj->GetLocation() == location; });
   if (it == tiles_.end()) return nullptr;
   return tiles_[std::distance(tiles_.begin(), it)].get();
+}
+
+std::vector<Tile *> Province::GetTilesByType(enums::TileType type) const {
+  std::vector<Tile *> result;
+
+  for (auto &t : tiles_) {
+    if (t->GetType() == type) result.push_back(t.get());
+  }
+
+  return result;
+}
+
+void Province::GeneratePlayer(Player *player) const {
+  bool player_generated = false;
+  while (!player_generated) {
+    auto ran_loc = std::make_pair(util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1),
+                                  util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1));
+    if ((ran_loc.first != 0 && ran_loc.second != PROVINCE_SIZE - 1)
+        || (ran_loc.second != 0 && ran_loc.second != PROVINCE_SIZE - 1))
+      continue;
+    auto t = GetTileByLocation(ran_loc);
+    if (t != nullptr && t->GetType() == enums::EMPTY) {
+      t->SetType(enums::PLAYER);
+    }
+
+    player->SetProvince(location_);
+    player->SetLocation(ran_loc);
+    player_generated = true;
+  }
+}
+
+void Province::GenerateKing(domain::models::King *king) const {
+  bool king_generated = false;
+  while (!king_generated) {
+    auto ran_loc = std::make_pair(util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1),
+                                  util::RandomWrapper::GetInstance()->RandomIntInRange(0, PROVINCE_SIZE - 1));
+    auto t = GetTileByLocation(ran_loc);
+    if (t != nullptr && t->GetType() == enums::EMPTY) {
+      t->SetType(enums::KING);
+    }
+
+    king->SetLocation(ran_loc);
+    king_generated = true;
+  }
 }
 
 void Province::GenerateMountain(std::pair<int, int> location) const {
@@ -151,5 +196,4 @@ void Province::GenerateProvince(structs::ProvinceStatistics province_statistics)
     }
   }
 }
-
 } // namespace domain::models

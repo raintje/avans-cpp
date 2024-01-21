@@ -2,14 +2,14 @@
 
 namespace game::logic {
 
-BattleController::BattleController() : battle_ongoing_(true) {};
+BattleController::BattleController() :
+    battle_ongoing_(true),
+    logic_drawer_(std::make_shared<drawing::LogicDrawer>()) {}
 BattleController::~BattleController() = default;
 
 void BattleController::Start(std::map<int, int> *player_warband, std::map<int, int> *enemy_warband) {
-  if (game::drawing::PrintBattlePrompt(true)) {
-    while (battle_ongoing_)
-      Round(*player_warband, *enemy_warband);
-  } else Retreat(*player_warband, *enemy_warband);
+  while (battle_ongoing_)
+    Round(*player_warband, *enemy_warband);
 }
 
 void BattleController::Round(const std::map<int, int> &player_warband, const std::map<int, int> &enemy_warband) {
@@ -57,8 +57,29 @@ void BattleController::Round(const std::map<int, int> &player_warband, const std
 
 }
 
-bool BattleController::Retreat(std::map<int, int> player_warband, std::map<int, int> enemy_warband) {
-  return false;
+void BattleController::Retreat(const std::map<int, int> &player_warband, const std::map<int, int> &enemy_warband) {
+  int volley = 1;
+
+  while (volley < 5) {
+    std::pair<int, int> player_losses;
+
+    for (auto i : enemy_warband) {
+      if (CheckTroopType(i.first, volley)) {
+        int hits = 0;
+        int target = FindTarget(player_warband);
+
+        if (target == -1) break;
+        for (int a = 0; a <= i.second; ++a) {
+          if (Attack(i.first, target)) ++hits;
+        }
+
+        player_losses = {target, hits};
+      }
+    }
+
+    SubtractLosses(player_warband, player_losses);
+    ++volley;
+  }
 }
 
 bool BattleController::Attack(int attacker, int target) {
