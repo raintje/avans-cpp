@@ -9,10 +9,14 @@ Game::Game() :
     state_(enums::SHOWING_LAND),
     land_(std::make_unique<domain::models::Land>()),
     selected_province_({0, 0}),
+    logger_(std::make_shared<util::Logger>()),
     movement_controller_(std::make_unique<logic::MovementController>()),
     interaction_controller_(std::make_unique<logic::InteractionController>()),
-    battle_controller_(std::make_unique<logic::BattleController>()),
-    logger_(std::make_unique<util::Logger>()) {}
+    battle_controller_(std::make_unique<logic::BattleController>()) {
+  movement_controller_->SetLogger(logger_);
+  interaction_controller_->SetLogger(logger_);
+  battle_controller_->SetLogger(logger_);
+}
 Game::~Game() = default;
 
 void Game::ChangeLand() {
@@ -37,7 +41,9 @@ void Game::RunGame() {
     if (GetState() == enums::SHOWING_LAND) drawing::DomainDrawer::DrawLand(land_.get(), selected_province_);
     if (GetState() == enums::SHOWING_PROVINCE) drawing::DomainDrawer::DrawProvince(land_->GetCurrentProvince());
     if (GetState() == enums::SHOWING_WARBAND) {
-      drawing::DomainDrawer::DrawWarband(player_.get());
+      drawing::DomainDrawer::DrawWarband(*player_->GetWarband());
+      std::cout << "Goud: " << player_->GetGold() << std::endl;
+      std::cout << "Proviand: " << player_->GetProvisions() << std::endl;
     }
 
     for (const auto &s : CompileAvailableCommands()) {
@@ -49,6 +55,7 @@ void Game::RunGame() {
     std::string input;
     std::getline(std::cin, input);
     HandleCommand(input);
+    CheckVictoryConditions();
   }
 }
 
@@ -65,7 +72,32 @@ void Game::HandleCommand(std::string command) {
   if (i == "p" && land_->GetCurrentProvince() != nullptr) SetState(enums::SHOWING_PROVINCE);
 
   if (i == "c" && GetState() == enums::SHOWING_LAND) {
+    turn_counter_++;
+    if (!god_mode_)
+      player_->Upkeep();
     ChangeLand();
+  }
+
+  if (i == "q" && GetState() == enums::SHOWING_PROVINCE) {
+    if (!god_mode_) player_->Upkeep();
+    movement_controller_->MoveAllEnemies(land_->GetCurrentProvince());
+    logger_->WriteLine("Ronde " + std::to_string(turn_counter_++) + ": Speler heeft zijn beurt overgeslagen.");
+    return;
+  }
+
+  if (i == "god") {
+    god_mode_ = !god_mode_;
+    battle_controller_->ToggleGodMode();
+  }
+
+  if (i == "rosebud") {
+    player_->IncreaseGoldBy(10000);
+    player_->IncreaseProvisionsBy(10000);
+  }
+
+  if (i == "romeo") {
+    player_->ReduceGoldBy(player_->GetGold());
+    player_->ReduceProvisionsBy(player_->GetProvisions());
   }
 
   if (movement_controller_->CheckIfMovementCommand(i)) {
@@ -79,31 +111,65 @@ void Game::HandleCommand(std::string command) {
     }
 
     if (GetState() == enums::SHOWING_PROVINCE) {
+      MoveToAdjacentProvince(i);
       auto next_loc = movement_controller_->PrepareNextLocation(i, player_.get());
       auto t = land_->GetCurrentProvince()->GetTileByLocation(next_loc);
       if (t->GetType() == domain::enums::EMPTY) {
-        auto temp = player_->GetLocation();
         movement_controller_->MovePlayer(player_.get(),
                                          land_->GetCurrentProvince(),
+                                         turn_counter_++,
                                          next_loc);
-        logger_->WriteLine(
-            "Beurt " + std::to_string(turn_counter_++) + ": Speler heeft van tegel [" + std::to_string(temp.first)
-                + ", "
-                + std::to_string(temp.second) + "] naar tegel [" + std::to_string(player_->GetLocation().first) + ", "
-                + std::to_string(player_->GetLocation().second) + "] bewogen.");
+        movement_controller_->MoveAllEnemies(land_->GetCurrentProvince());
+        if (!god_mode_) player_->Upkeep();
       } else {
-        if (t->GetType() == domain::enums::VILLAGE)
-          interaction_controller_->HandleVillageInteraction(player_.get(), logger_.get(), turn_counter_++, t);
+        if (t->GetType() == domain::enums::VILLAGE) {
+          interaction_controller_->HandleVillageInteraction(player_.get(), turn_counter_++, t);
+          movement_controller_->MoveAllEnemies(land_->GetCurrentProvince());
+          if (!god_mode_) player_->Upkeep();
+        }
 
-        if (t->GetType() == domain::enums::CITY)
-          interaction_controller_->HandleCityInteraction(player_.get(), logger_.get(), turn_counter_++, t);
+        if (t->GetType() == domain::enums::CITY) {
+          interaction_controller_->HandleCityInteraction(player_.get(), turn_counter_++, t);
+          movement_controller_->MoveAllEnemies(land_->GetCurrentProvince());
+          if (!god_mode_) player_->Upkeep();
+        }
 
         if (t->GetType() == domain::enums::ENEMY) {
           auto e = reinterpret_cast<domain::models::Enemy *>(t->GetTileContents());
-          e->Interact();
-          battle_controller_->Start(player_->GetWarband(), e->GetWarband());
-          CheckVictoryConditions();
+          auto interaction = interaction_controller_->HandleEnemyInteraction(e);
+          battle_controller_->SetPlayer(player_.get());
+          battle_controller_->SetEnemy(e);
 
+          if (interaction == 1) {
+            battle_controller_->Start();
+            ++turn_counter_;
+            std::string confirmation;
+            while (confirmation != "ok") {
+              std::cout << "Type \"ok\" om door te gaan..." << std::endl;
+              std::getline(std::cin, confirmation);
+            }
+          }
+
+          if (interaction == 2) {
+            drawing::DomainDrawer::DrawWarband(*e->GetWarband());
+            std::string confirmation;
+            while (confirmation != "ok") {
+              std::cout << "Type \"ok\" om door te gaan..." << std::endl;
+              std::getline(std::cin, confirmation);
+            }
+          } else {
+            battle_controller_->Retreat();
+          }
+
+          battle_controller_->Reset();
+          t->SetType(domain::enums::EMPTY);
+          t->SetTileContents(nullptr);
+          movement_controller_->MoveAllEnemies(land_->GetCurrentProvince());
+          if (!god_mode_) player_->Upkeep();
+        }
+
+        if (t->GetType() == domain::enums::KING) {
+          running_ = interaction_controller_->HandleKingInteraction(land_->GetKing()->get(), land_.get());
         }
       }
     }
@@ -112,7 +178,8 @@ void Game::HandleCommand(std::string command) {
   if (i == "g" && GetState() == enums::SHOWING_LAND && land_->GetCurrentProvince() == nullptr) {
     land_->EnterProvince(selected_province_, player_.get());
     SetState(enums::SHOWING_PROVINCE);
-    logger_->WriteLine("Beurt " + std::to_string(turn_counter_++) + ": Speler heeft provincie op locatie ["
+    logger_->WriteLine("Beurt " +
+        std::to_string(turn_counter_++) + ": Speler heeft provincie op locatie ["
                            + std::to_string(selected_province_.first) + ", "
                            + std::to_string(selected_province_.second) + "] betreedt.");
   }
@@ -124,6 +191,7 @@ std::vector<std::string> Game::CompileAvailableCommands() {
   std::string show_warband = "b - inspecteer je eigen krijgsbende";
   std::string show_province = "p - toon de huidige provincie";
   std::string show_land = "m - toon de kaart van het huidige land";
+  std::string pass_turn = "q - doe niets";
 
   if (GetState() == enums::SHOWING_WARBAND) {
     result.emplace_back(std::move(show_land));
@@ -133,6 +201,7 @@ std::vector<std::string> Game::CompileAvailableCommands() {
   if (GetState() == enums::SHOWING_PROVINCE) {
     result.emplace_back(std::move(show_warband));
     result.emplace_back(std::move(show_land));
+    result.emplace_back(std::move(pass_turn));
     auto v = movement_controller_->CheckViableMoves(land_->GetCurrentProvince(), player_->GetLocation());
     for (auto r : v) {
       result.emplace_back(std::move(r));
@@ -147,7 +216,7 @@ std::vector<std::string> Game::CompileAvailableCommands() {
     if (t.contains("left"))
       result.emplace_back("a - benader de tegel ten westen van je.");
     if (t.contains("right"))
-      result.emplace_back("d - benader de tegel ten right van je.");
+      result.emplace_back("d - benader de tegel ten oosten van je.");
   }
 
   if (GetState() == enums::SHOWING_LAND) {
@@ -242,10 +311,64 @@ std::map<std::string, domain::models::Tile *> Game::CheckForInteractableTiles() 
 }
 
 void Game::CheckVictoryConditions() {
-  // @TODO check if king is dead or if troops are dead
+  if (player_->GetWarband()->empty()) {
+    std::cout << "Helaas! Al je troepen zijn gesneuveld!" << std::endl;
+    running_ = false;
+    logger_->WriteLine("Beurt " + std::to_string(turn_counter_) + ": De speler heeft het spel verloren.");
+  }
+
+  if (land_->GetKing() == nullptr) {
+    std::cout << "Hoera! De koning is gesneuveld!" << std::endl;
+    logger_->WriteLine("Beurt " + std::to_string(turn_counter_) + ": De speler heeft het spel gewonnen.");
+  }
 }
 
 enums::GameState Game::GetState() { return state_; }
 void Game::SetState(enums::GameState state) { state_ = state; }
+
+void Game::MoveToAdjacentProvince(const std::string &command) {
+  auto l = land_->GetCurrentProvince()->GetLocation();
+  auto p = player_->GetLocation();
+
+  if (command == "a") {
+    if (p.first - 1 < 0) {
+      if (l.first - 1 >= 0) {
+        selected_province_ = std::make_pair(l.first - 1, l.second);
+        land_->EnterProvince(selected_province_, player_.get());
+        land_->GetCurrentProvince()->GetTileByLocation(player_->GetLocation())->SetType(domain::enums::EMPTY);
+      }
+    }
+  }
+
+  if (command == "d") {
+    if (p.first + 1 >= PROVINCE_SIZE) {
+      if (l.first + 1 < LAND_SIZE) {
+        selected_province_ = std::make_pair(l.first + 1, l.second);
+        land_->EnterProvince(selected_province_, player_.get());
+        land_->GetCurrentProvince()->GetTileByLocation(player_->GetLocation())->SetType(domain::enums::EMPTY);
+      }
+    }
+  }
+
+  if (command == "w") {
+    if (p.second - 1 < 0) {
+      if (l.second - 1 >= 0) {
+        selected_province_ = std::make_pair(l.first, l.second - 1);
+        land_->EnterProvince(selected_province_, player_.get());
+        land_->GetCurrentProvince()->GetTileByLocation(player_->GetLocation())->SetType(domain::enums::EMPTY);
+      }
+    }
+  }
+
+  if (command == "s") {
+    if (p.second + 1 >= PROVINCE_SIZE) {
+      if (l.second + 1 < LAND_SIZE) {
+        selected_province_ = std::make_pair(l.first, l.second + 1);
+        land_->EnterProvince(selected_province_, player_.get());
+        land_->GetCurrentProvince()->GetTileByLocation(player_->GetLocation())->SetType(domain::enums::EMPTY);
+      }
+    }
+  }
+}
 
 } // namespace game::state

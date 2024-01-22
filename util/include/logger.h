@@ -6,7 +6,6 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <mutex>
 
 namespace util {
 
@@ -19,7 +18,6 @@ class Logger {
 
  private:
   std::ofstream file_;
-  std::mutex mutex_;
 };
 
 } // namespace util

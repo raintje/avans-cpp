@@ -40,6 +40,7 @@ structs::ProvinceStatistics Land::GetProvinceStatistics(const int x, const int y
 models::Province *Land::GetCurrentProvince() const { return current_province_.get(); }
 
 std::unique_ptr<King> *Land::GetKing() { return &king_; }
+void Land::KillKing() { king_ = nullptr; }
 
 Land::~Land() = default;
 

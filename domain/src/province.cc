@@ -141,7 +141,7 @@ void Province::GenerateEnemies() {
       if (t != nullptr && t->GetType() == enums::EMPTY) {
         int threatLevel = util::RandomWrapper::GetInstance()->RandomIntInRange(0, 4);
 
-        t->SetTileContents(std::move(std::make_unique<Enemy>(faction_, threatLevel)));
+        t->SetTileContents(std::make_unique<Enemy>(faction_, threatLevel));
         t->SetType(enums::ENEMY);
 
         enemy_generated = true;
@@ -152,8 +152,10 @@ void Province::GenerateEnemies() {
 
 void Province::ClearEnemies() {
   for (auto &t : tiles_) {
-    if (t->GetType() == enums::ENEMY) t->SetType(enums::EMPTY);
-    t->SetTileContents(nullptr);
+    if (t->GetType() == enums::ENEMY) {
+      t->SetType(enums::EMPTY);
+      t->SetTileContents(nullptr);
+    }
   }
 }
 

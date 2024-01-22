@@ -14,9 +14,7 @@ Logger::Logger() {
 Logger::~Logger() { file_.close(); }
 
 void Logger::WriteLine(const std::string &line) {
-  mutex_.lock();
   file_ << line << std::endl;
-  mutex_.unlock();
 }
 
 } // namespace util

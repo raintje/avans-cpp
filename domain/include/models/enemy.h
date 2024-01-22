@@ -15,12 +15,14 @@ namespace domain::models {
 
 class Enemy : public TileContents {
  public:
-  Enemy(std::string faction, int threat_level);
+  Enemy(const std::string &faction, int threat_level);
   ~Enemy() override;
 
   void Interact() override;
 
   [[nodiscard]]std::map<int, int> *GetWarband();
+  void RemoveTroops(int id, int amount);
+
   [[nodiscard]]int GetGold() const;
   [[nodiscard]]int GetProvisions() const;
  private:

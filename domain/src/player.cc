@@ -11,11 +11,26 @@ void Player::IncreaseGoldBy(int gold) { gold_ += gold; }
 int Player::GetProvisions() const { return provisions_; }
 void Player::ReduceProvisionsBy(int provisions) { provisions_ -= provisions; }
 void Player::IncreaseProvisionsBy(int provisions) { provisions_ += provisions; }
+void Player::Upkeep() {
+  for (auto &i : warband_) {
+    if (provisions_ > 0) {
+      ReduceProvisionsBy(i.second);
+    }
+    else if (util::RandomWrapper::GetInstance()->RandomIntInRange(0, 100) > 90) {
+      i.second--;
+      if (i.second >= 0) warband_.erase(i.first);
+    }
+  }
+}
 
 std::map<int, int> *Player::GetWarband() { return &warband_; }
 void Player::AddTroops(int id, int amount) {
   if (warband_.contains(id)) warband_[id] += amount;
   else warband_.insert({id, amount});
+}
+void Player::RemoveTroops(int id, int amount) {
+  warband_[id] -= amount;
+  if (warband_[id] >= 0) warband_.erase(id);
 }
 
 Player::Player() :

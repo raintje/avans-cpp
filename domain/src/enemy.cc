@@ -6,8 +6,8 @@
 
 namespace domain::models {
 
-Enemy::Enemy(std::string faction, const int threat_level) :
-    faction_(std::move(faction)),
+Enemy::Enemy(const std::string &faction, const int threat_level) :
+    faction_(faction),
     gold_(util::RandomWrapper::GetInstance()->RandomIntInRange(INITIAL_GOLD_MIN, INITIAL_GOLD_MAX)),
     provisions_(util::RandomWrapper::GetInstance()->RandomIntInRange(0, INITIAL_PROVISIONS_MAX)) {
   auto t = db::DbWrapper::GetInstance()->GetThreatLevel(threat_level);
@@ -25,6 +25,10 @@ void Enemy::Interact() {
   std::cout << "2. Inspecteren" << std::endl;
   std::cout << "3. Terugtrekken" << std::endl;
   std::cout << "Voer hier je antwoord in (1, 2, 3): ";
+}
+void Enemy::RemoveTroops(int id, int amount) {
+  warband_[id] -= amount;
+  if (warband_[id] >= 0) warband_.erase(id);
 }
 
 Enemy::~Enemy() = default;

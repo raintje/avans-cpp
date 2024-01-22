@@ -10,20 +10,12 @@
 namespace game::drawing {
 class LogicDrawer {
  public:
-  LogicDrawer();
   ~LogicDrawer();
 
-  // movement
-  void PrintViableMovementOptions(std::map<std::string, domain::models::Tile *> options);
-
-  // vendors
-  void PrintTroopTransaction();
-  void PrintProvisionTransaction();
-
-  // battle
-  [[nodiscard]]static bool PrintBattlePrompt(bool first_turn);
-  void PrintAttack(int round, bool friendly, const std::string &troop_type, int amount);
-  void PrintTroopDeath(int round, bool friendly, const std::string &troop_type);
+  static void PrintAttack(int round, bool friendly, const std::string &attacker_name, const std::string &target_name, bool hit);
+  static void PrintTroopDeath(int round, bool friendly, const std::string &troop_name);
+ private:
+  LogicDrawer();
 };
 } // namespace game::drawing
 

@@ -4,31 +4,44 @@
 #include <map>
 #include <algorithm>
 
+#include "logger.h"
+#include "validation.h"
 #include "db_wrapper.h"
 #include "random_wrapper.h"
 
 #include "drawing/logic.h"
+#include "models/enemy.h"
 
 namespace game::logic {
 class BattleController {
  public:
-  BattleController();
+  explicit BattleController();
   ~BattleController();
 
-  void Start(std::map<int, int> *player_warband, std::map<int, int> *enemy_warband);
-  void Round(const std::map<int, int> &player_warband, const std::map<int, int> &enemy_warband);
-  void Retreat(const std::map<int, int> &player_warband, const std::map<int, int> &enemy_warband);
+  void Start();
+  void Round();
+  void Retreat();
 
-  [[nodiscard]]static bool Attack(int attacker, int target);
+  [[nodiscard]]bool Attack(int attacker, int target);
   [[nodiscard]]static bool ConfirmDefeat(const std::map<int, int> &warband);
 
+  void SetLogger(const std::shared_ptr<util::Logger> &logger);
+  void SetPlayer(domain::models::Player *player);
+  void SetEnemy(domain::models::Enemy *enemy);
+
+  void ToggleGodMode();
+
+  void Reset();
  private:
-  static void SubtractLosses(std::map<int, int> warband, const std::pair<int, int> &losses);
   [[nodiscard]]static int FindTarget(const std::map<int, int> &warband);
   [[nodiscard]]static bool CheckTroopType(int id, int volley);
 
-  bool battle_ongoing_;
-  std::shared_ptr<drawing::LogicDrawer> logic_drawer_;
+  domain::models::Player *player_;
+  domain::models::Enemy *enemy_;
+
+  int round_;
+  bool god_mode_;
+  std::shared_ptr<util::Logger> logger_;
 };
 } // namespace game::logic
 

@@ -30,5 +30,6 @@ void Tile::SetType(enums::TileType type) { type_ = type; }
 enums::TileType Tile::GetType() { return type_; }
 std::pair<int, int> Tile::GetLocation() const { return location_; }
 TileContents *Tile::GetTileContents() { return contents_.get(); }
+std::unique_ptr<TileContents> Tile::MoveContents() { return std::move(contents_); }
 
 } // namespace domain::models

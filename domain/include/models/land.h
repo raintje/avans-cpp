@@ -25,6 +25,7 @@ class Land {
   [[nodiscard]] structs::ProvinceStatistics GetProvinceStatistics(int x, int y) const;
   [[nodiscard]] models::Province *GetCurrentProvince() const;
   [[nodiscard]] std::unique_ptr<King> *GetKing();
+  void KillKing();
  private:
   std::unique_ptr<King> king_;
   std::map<std::pair<int, int>, structs::ProvinceStatistics> province_statistics_;

@@ -31,17 +31,14 @@ void DomainDrawer::DrawProvince(domain::models::Province *province) {
   }
 }
 
-void DomainDrawer::DrawWarband(domain::models::Player *p) {
+void DomainDrawer::DrawWarband(const std::map<int, int> &warband) {
   int counter = 1;
   std::cout << "\033[4m" << "------KRIJGSBENDE------" << "\033[24m" << std::endl;
-  for (auto k : *p->GetWarband()) {
+  for (auto k : warband) {
     auto t = db::DbWrapper::GetInstance()->GetTroopDataById(k.first);
     std::cout << counter++ << ": " << std::get<3>(t) << std::endl;
     std::cout << "Aantal: " << k.second << " - Totaalprijs: " << std::get<4>(t) * k.second << std::endl;
   }
-
-  std::cout << "Goud: " << p->GetGold() << std::endl;
-  std::cout << "Provisies: " << p->GetProvisions() << std::endl;
 }
 
 } // namespace game::drawing

@@ -38,6 +38,9 @@ class Game {
   /// @brief Changes the selected province.
   void ChangeSelectedProvince(const std::string &command);
 
+  /// @brief Moves the player to an adjacent province.
+  void MoveToAdjacentProvince(const std::string &command);
+
   /// @brief Compiles all the available commands.
   std::vector<std::string> CompileAvailableCommands();
 
@@ -63,10 +66,11 @@ class Game {
   std::unique_ptr<logic::InteractionController> interaction_controller_;
 
   // logging
-  std::unique_ptr<util::Logger> logger_;
+  std::shared_ptr<util::Logger> logger_;
 
   std::pair<int, int> selected_province_;
   enums::GameState state_;
+  bool god_mode_;
 };
 } // namespace game::state
 

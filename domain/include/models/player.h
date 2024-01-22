@@ -23,9 +23,11 @@ class Player {
   [[nodiscard]]int GetProvisions() const;
   void ReduceProvisionsBy(int provisions);
   void IncreaseProvisionsBy(int provisions);
+  void Upkeep();
 
   [[nodiscard]]std::map<int, int> *GetWarband();
   void AddTroops(int id, int amount);
+  void RemoveTroops(int id, int amount);
 
   [[nodiscard]]std::pair<int, int> GetProvince();
   void SetProvince(const std::pair<int, int> &province);
