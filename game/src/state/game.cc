@@ -169,6 +169,8 @@ void Game::HandleCommand(std::string command) {
         }
 
         if (t->GetType() == domain::enums::KING) {
+          std::cout << "Hoera! De koning is gesneuveld!" << std::endl;
+          logger_->WriteLine("Beurt " + std::to_string(turn_counter_) + ": De speler heeft het spel gewonnen.");
           running_ = interaction_controller_->HandleKingInteraction(land_->GetKing()->get(), land_.get());
         }
       }
@@ -315,11 +317,6 @@ void Game::CheckVictoryConditions() {
     std::cout << "Helaas! Al je troepen zijn gesneuveld!" << std::endl;
     running_ = false;
     logger_->WriteLine("Beurt " + std::to_string(turn_counter_) + ": De speler heeft het spel verloren.");
-  }
-
-  if (land_->GetKing() == nullptr) {
-    std::cout << "Hoera! De koning is gesneuveld!" << std::endl;
-    logger_->WriteLine("Beurt " + std::to_string(turn_counter_) + ": De speler heeft het spel gewonnen.");
   }
 }
 
